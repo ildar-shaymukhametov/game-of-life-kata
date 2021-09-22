@@ -1,10 +1,12 @@
+using System.Text;
+
 public class Cells
 {
-    private readonly Cell[,] _cells;
+    private Cell[,] _cells;
 
     public Cells()
     {
-        _cells = new Cell[1000, 1000];
+        _cells = new Cell[30, 30];
         Iterate(x => x.Initialize(_cells));
     }
 
@@ -18,6 +20,34 @@ public class Cells
         coordinates.SetLiving(_cells);
     }
 
+    public void Tick()
+    {
+        var next = new Cell[_cells.GetLength(0), _cells.GetLength(1)];
+
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < _cells.GetLength(1); y++)
+            {
+                var coords = new Coordinates(x, y);
+                if (coords.IsAliveInNextGeneration(_cells))
+                {
+                    coords.SetLiving(next);
+                }
+                else
+                {
+                    coords.SetDead(next);
+                }
+            }
+        }
+
+        _cells = next;
+    }
+
+    internal bool IsDeadAt(Coordinates coordinates)
+    {
+        return coordinates.IsDead(_cells);
+    }
+
     private void Iterate(Action<Coordinates> action)
     {
         for (int x = 0; x < _cells.GetLength(0); x++)
@@ -27,5 +57,32 @@ public class Cells
                 action(new Coordinates(x, y));
             }
         }
+    }
+
+    public bool IsLivingAt(Coordinates coordinates)
+    {
+        return coordinates.IsLiving(_cells);
+    }
+
+    public override string ToString()
+    {
+        var result = new StringBuilder();
+        for (int y = 0; y < _cells.GetLength(1); y++)
+        {
+            for (int x = 0; x < _cells.GetLength(0); x++)
+            {
+                if (IsLivingAt(new Coordinates(x, y)))
+                {
+                    result.Append(" * ");
+                }
+                else
+                {
+                    result.Append("   ");
+                }
+            }
+            result.AppendLine();
+        }
+
+        return result.ToString();
     }
 }

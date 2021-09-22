@@ -16,4 +16,24 @@ public class World
     {
         _cells.SetLivingAt(coordinates);
     }
+
+    public void Tick()
+    {
+        _cells.Tick();
+    }
+
+    public bool IsLivingAt(Coordinates coordinates)
+    {
+        return _cells.IsLivingAt(coordinates);
+    }
+
+    public bool IsDeadAt(Coordinates coordinates)
+    {
+        return _cells.IsDeadAt(coordinates);
+    }
+
+    public override string ToString()
+    {
+        return _cells.ToString();
+    }
 }
