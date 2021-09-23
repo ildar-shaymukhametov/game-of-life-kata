@@ -12,7 +12,7 @@ public class World
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
-                _cells[x, y] = new DeadCell(new Coordinates(x, y), _cells);
+                SetDead(_cells, new Coordinates(x, y));
             }
         }
 
@@ -26,7 +26,7 @@ public class World
 
     public void SetLivingAt(Coordinates coordinates)
     {
-        _cells[coordinates.X, coordinates.Y] = new LivingCell(coordinates, _cells);
+        SetAlive(_cells, coordinates);
     }
 
     public void Tick()
@@ -38,13 +38,13 @@ public class World
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
                 var coords = new Coordinates(x, y);
-                if (_cells[coords.X, coords.Y].IsAliveInNextGeneration())
+                if (CellAt(coords).IsAliveInNextGeneration())
                 {
-                    next[coords.X, coords.Y] = new LivingCell(coords, _cells);
+                    SetAlive(next, coords);
                 }
                 else
                 {
-                    next[coords.X, coords.Y] = new DeadCell(coords, _cells);
+                    SetDead(next, coords);
                 }
             }
         }
@@ -52,14 +52,29 @@ public class World
         _cells = next;
     }
 
+    private Cell CellAt(Coordinates coords)
+    {
+        return _cells[coords.X, coords.Y];
+    }
+
+    private void SetDead(Cell[,] cells, Coordinates coords)
+    {
+        cells[coords.X, coords.Y] = new DeadCell(coords, _cells);
+    }
+
+    private void SetAlive(Cell[,] cells, Coordinates coords)
+    {
+        cells[coords.X, coords.Y] = new LivingCell(coords, _cells);
+    }
+
     public bool IsDeadAt(Coordinates coordinates)
     {
-        return _cells[coordinates.X, coordinates.Y].IsDead();
+        return CellAt(coordinates).IsDead();
     }
 
     public bool IsLivingAt(Coordinates coordinates)
     {
-        return _cells[coordinates.X, coordinates.Y].IsAlive();
+        return CellAt(coordinates).IsAlive();
     }
 
     public override string ToString()
