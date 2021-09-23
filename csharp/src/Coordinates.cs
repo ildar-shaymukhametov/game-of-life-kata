@@ -11,11 +11,6 @@ public class Coordinates
         this.y = y;
     }
 
-    public void Initialize(Cell[,] cells)
-    {
-        SetDead(cells);
-    }
-
     public void SetLiving(Cell[,] cells)
     {
         cells[x, y] = new LivingCell();

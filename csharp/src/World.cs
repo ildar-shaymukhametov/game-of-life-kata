@@ -7,7 +7,13 @@ public class World
     public World(Size size)
     {
         _cells = size.CreateGrid<Cell>();
-        Iterate(x => x.Initialize(_cells));
+        for (int x = 0; x < _cells.GetLength(0); x++)
+        {
+            for (int y = 0; y < _cells.GetLength(1); y++)
+            {
+                _cells[x, y] = new DeadCell();
+            }
+        }
     }
 
     public bool IsEmpty()
@@ -46,17 +52,6 @@ public class World
     public bool IsDeadAt(Coordinates coordinates)
     {
         return coordinates.IsDead(_cells);
-    }
-
-    private void Iterate(Action<Coordinates> action)
-    {
-        for (int x = 0; x < _cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < _cells.GetLength(1); y++)
-            {
-                action(new Coordinates(x, y));
-            }
-        }
     }
 
     public bool IsLivingAt(Coordinates coordinates)
