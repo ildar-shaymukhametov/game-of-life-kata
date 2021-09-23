@@ -4,9 +4,9 @@ public class World
 {
     private Cell[,] _cells;
 
-    public World()
+    public World(Size size)
     {
-        _cells = new Cell[30, 30];
+        _cells = size.Create<Cell>();
         Iterate(x => x.Initialize(_cells));
     }
 
