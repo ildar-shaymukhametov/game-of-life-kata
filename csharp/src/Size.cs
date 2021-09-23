@@ -9,7 +9,7 @@ public class Size
         this.height = height;
     }
 
-    internal T[,] Create<T>()
+    internal T[,] CreateGrid<T>()
     {
         return new T[width, height];
     }

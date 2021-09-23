@@ -6,7 +6,7 @@ public class World
 
     public World(Size size)
     {
-        _cells = size.Create<Cell>();
+        _cells = size.CreateGrid<Cell>();
         Iterate(x => x.Initialize(_cells));
     }
 
