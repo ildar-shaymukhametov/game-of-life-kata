@@ -1,7 +1,12 @@
 public class LivingCell : Cell
 {
-    internal override bool IsAliveInNextGeneration(int numberOfNeighbours)
+    public LivingCell(Coordinates coordinates, Cell[,] cells) : base(coordinates, cells)
     {
+    }
+
+    internal override bool IsAliveInNextGeneration()
+    {
+        var numberOfNeighbours = GetNumberOfNeighbours();
         return numberOfNeighbours == 3 || numberOfNeighbours == 2;
     }
 }

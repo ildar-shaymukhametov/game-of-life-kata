@@ -3,6 +3,7 @@ using System.Text;
 public class World
 {
     private Cell[,] _cells;
+    private readonly Size size;
 
     public World(Size size)
     {
@@ -11,9 +12,11 @@ public class World
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
-                _cells[x, y] = new DeadCell();
+                _cells[x, y] = new DeadCell(new Coordinates(x, y), _cells);
             }
         }
+
+        this.size = size;
     }
 
     public bool IsEmpty()
@@ -23,25 +26,25 @@ public class World
 
     public void SetLivingAt(Coordinates coordinates)
     {
-        coordinates.SetLiving(_cells);
+        _cells[coordinates.X, coordinates.Y] = new LivingCell(coordinates, _cells);
     }
 
     public void Tick()
     {
-        var next = new Cell[_cells.GetLength(0), _cells.GetLength(1)];
+        var next = size.CreateGrid<Cell>();
 
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
                 var coords = new Coordinates(x, y);
-                if (coords.IsAliveInNextGeneration(_cells))
+                if (_cells[coords.X, coords.Y].IsAliveInNextGeneration())
                 {
-                    coords.SetLiving(next);
+                    next[coords.X, coords.Y] = new LivingCell(coords, _cells);
                 }
                 else
                 {
-                    coords.SetDead(next);
+                    next[coords.X, coords.Y] = new DeadCell(coords, _cells);
                 }
             }
         }
@@ -51,12 +54,12 @@ public class World
 
     public bool IsDeadAt(Coordinates coordinates)
     {
-        return coordinates.IsDead(_cells);
+        return _cells[coordinates.X, coordinates.Y].IsDead();
     }
 
     public bool IsLivingAt(Coordinates coordinates)
     {
-        return coordinates.IsLiving(_cells);
+        return _cells[coordinates.X, coordinates.Y].IsAlive();
     }
 
     public override string ToString()

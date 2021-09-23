@@ -1,7 +1,11 @@
 public class DeadCell : Cell
 {
-    internal override bool IsAliveInNextGeneration(int numberOfNeighbours)
+    public DeadCell(Coordinates coordinates, Cell[,] cells) : base(coordinates, cells)
     {
-        return numberOfNeighbours == 3;
+    }
+
+    internal override bool IsAliveInNextGeneration()
+    {
+        return GetNumberOfNeighbours() == 3;
     }
 }
