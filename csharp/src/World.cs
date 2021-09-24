@@ -3,11 +3,12 @@ using System.Text;
 public class World
 {
     private Cell[,] _cells;
-    private readonly Size size;
+    private readonly Size _size;
 
     public World(Size size)
     {
-        _cells = size.CreateGrid<Cell>();
+        _size = size;
+        _cells = CreateGrid();
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
@@ -15,8 +16,11 @@ public class World
                 SetDead(_cells, new Coordinates(x, y));
             }
         }
+    }
 
-        this.size = size;
+    private Cell[,] CreateGrid()
+    {
+        return new Cell[_size.Width, _size.Height];
     }
 
     public bool IsEmpty()
@@ -31,7 +35,7 @@ public class World
 
     public void Tick()
     {
-        var next = size.CreateGrid<Cell>();
+        var next = CreateGrid();
 
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
