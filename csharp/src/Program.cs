@@ -1,12 +1,10 @@
-﻿var world = new World();
+﻿var max = 30;
+var world = new World(new Size(max, max));
 var random = new Random();
-var max = 30;
-for (int i = 0; i < max * 8; i++)
+for (int i = 0; i < max * max / 2; i++)
 {
     world.SetLivingAt(new Coordinates(random.Next(max), random.Next(max)));
 }
-world.SetLivingAt(new Coordinates(2, 2));
-world.SetLivingAt(new Coordinates(1, 2));
 
 while (true)
 {
