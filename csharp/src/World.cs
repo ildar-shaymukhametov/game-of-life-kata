@@ -9,6 +9,11 @@ public class World
     {
         _size = size;
         _cells = CreateGrid();
+        PopulateCells();
+    }
+
+    private void PopulateCells()
+    {
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
@@ -35,6 +40,11 @@ public class World
 
     public void Tick()
     {
+        _cells = GetNextGeneration();
+    }
+
+    private Cell[,] GetNextGeneration()
+    {
         var next = CreateGrid();
 
         for (int x = 0; x < _cells.GetLength(0); x++)
@@ -53,7 +63,7 @@ public class World
             }
         }
 
-        _cells = next;
+        return next;
     }
 
     private Cell CellAt(Coordinates coords)
