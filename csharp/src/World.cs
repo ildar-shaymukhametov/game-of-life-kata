@@ -14,13 +14,7 @@ public class World
 
     private void PopulateCells()
     {
-        for (int x = 0; x < _cells.GetLength(0); x++)
-        {
-            for (int y = 0; y < _cells.GetLength(1); y++)
-            {
-                SetDead(_cells, new Coordinates(x, y));
-            }
-        }
+        ForEach(x => SetDead(_cells, x));
     }
 
     private Cell[,] CreateGrid()
@@ -46,16 +40,20 @@ public class World
     private Cell[,] GetNextGeneration()
     {
         var next = CreateGrid();
+        ForEach(x => next[x.X, x.Y] = CreateCell(x));
 
+        return next;
+    }
+
+    private void ForEach(Action<Coordinates> action)
+    {
         for (int x = 0; x < _cells.GetLength(0); x++)
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
-                next[x, y] = CreateCell(new Coordinates(x, y));
+                action(new Coordinates(x, y));
             }
         }
-
-        return next;
     }
 
     private Cell CreateCell(Coordinates coords)
