@@ -14,7 +14,7 @@ public class World
 
     private void PopulateCells()
     {
-        ForEach(x => SetDead(_cells, x));
+        ForEach(SetDead);
     }
 
     private Cell[,] CreateGrid()
@@ -29,7 +29,7 @@ public class World
 
     public void SetLivingAt(Coordinates coordinates)
     {
-        SetAlive(_cells, coordinates);
+        _cells[coordinates.X, coordinates.Y] = new LivingCell(coordinates, _cells);
     }
 
     public void Tick()
@@ -73,14 +73,9 @@ public class World
         return _cells[coords.X, coords.Y];
     }
 
-    private void SetDead(Cell[,] cells, Coordinates coords)
+    private void SetDead(Coordinates coords)
     {
-        cells[coords.X, coords.Y] = new DeadCell(coords, _cells);
-    }
-
-    private void SetAlive(Cell[,] cells, Coordinates coords)
-    {
-        cells[coords.X, coords.Y] = new LivingCell(coords, _cells);
+        _cells[coords.X, coords.Y] = new DeadCell(coords, _cells);
     }
 
     public bool IsDeadAt(Coordinates coordinates)
