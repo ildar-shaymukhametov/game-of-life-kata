@@ -9,4 +9,6 @@ public class LivingCell : Cell
         var numberOfNeighbours = GetNumberOfNeighbours();
         return numberOfNeighbours == 3 || numberOfNeighbours == 2;
     }
+
+    public override string ToString() => "*";
 }

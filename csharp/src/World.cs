@@ -98,14 +98,7 @@ public class World
         {
             for (int x = 0; x < _cells.GetLength(0); x++)
             {
-                if (IsLivingAt(new Coordinates(x, y)))
-                {
-                    result.Append(" * ");
-                }
-                else
-                {
-                    result.Append("   ");
-                }
+                result.Append($" {CellAt(new Coordinates(x, y))} ");
             }
             result.AppendLine();
         }
