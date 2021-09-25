@@ -51,19 +51,23 @@ public class World
         {
             for (int y = 0; y < _cells.GetLength(1); y++)
             {
-                var coords = new Coordinates(x, y);
-                if (CellAt(coords).IsAliveInNextGeneration())
-                {
-                    SetAlive(next, coords);
-                }
-                else
-                {
-                    SetDead(next, coords);
-                }
+                next[x, y] = CreateCell(new Coordinates(x, y));
             }
         }
 
         return next;
+    }
+
+    private Cell CreateCell(Coordinates coords)
+    {
+        if (CellAt(coords).IsAliveInNextGeneration())
+        {
+            return new LivingCell(coords, _cells);
+        }
+        else
+        {
+            return new DeadCell(coords, _cells);
+        }
     }
 
     private Cell CellAt(Coordinates coords)
